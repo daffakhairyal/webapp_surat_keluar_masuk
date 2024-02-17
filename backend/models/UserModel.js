@@ -1,5 +1,6 @@
 import { Sequelize } from "sequelize";
 import db from "../config/Database.js";
+import Division from "./DivisionModel.js";
 
 const {DataTypes}= Sequelize;
 
@@ -44,10 +45,19 @@ const Users = db.define('users',{
             notEmpty: true,
            
         }
+    },
+    division: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notEmpty: true,
+           
+        }
     }
 }, {
     freezeTableName:true
 });
+
 
 
 export default Users;
