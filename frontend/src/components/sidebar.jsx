@@ -38,7 +38,7 @@ const Sidebar = () => {
     return (
       <div className="flex">
         <div
-          className={`bg-orange-900 h-screen p-5 pt-8 ${
+          className={`bg-red-800 h-screen p-5 pt-8 ${
             open ? "w-72" : "w-20"
           } duration-500 relative`}
         >
@@ -56,7 +56,7 @@ const Sidebar = () => {
           </div>
           <BsArrowLeftShort
             className={`bg-white text-dark text-4xl rounded-full 
-              absolute -right-3 top-9 border border-orange-950 cursor-pointer ${
+              absolute -right-3 top-9 border border-red-950 cursor-pointer ${
                 !open && "rotate-180"
               } duration-500`}
             onClick={() => {
