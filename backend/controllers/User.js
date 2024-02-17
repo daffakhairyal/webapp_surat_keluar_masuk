@@ -24,7 +24,7 @@ export const getUserById = async(req,res)=>{
 }
 
 export const createUser = async(req,res)=>{
-    const {name,email,password,confPassword,role} = req.body;
+    const {name,email,password,confPassword,role,division} = req.body;
     if(password !== confPassword) return res.status(400).json({msg:"Password tidak cocok"})
     if (password.length < 8 || password.length > 16) {
         return res.status(400).json({ msg: "Password harus memiliki panjang antara 8 dan 16 karakter" });
@@ -40,7 +40,8 @@ try {
         name:name,
         email:email,
         password:hashPassword,
-        role:role
+        role:role,
+        division:division
     });
     res.status(201).json({msg:"User berhasil ditambahkan!"})
 } catch (error) {
@@ -55,7 +56,7 @@ export const updateUser = async(req,res)=>{
         }
     });
     if (!user) return res.status(404).json({msg:"User tidak ditemukan!"})
-    const {name,email,password,confPassword,role} = req.body;
+    const {name,email,password,confPassword,role,division} = req.body;
     let hashPassword;
     if(password === ""|| password === null){
         hashPassword = user.password
@@ -71,7 +72,8 @@ export const updateUser = async(req,res)=>{
             name:name,
             email:email,
             password:hashPassword,
-            role:role
+            role:role,
+            division:divisionId
         },{
             where:{
                 id: user.id
