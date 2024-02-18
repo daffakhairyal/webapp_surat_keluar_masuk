@@ -8,7 +8,7 @@ const Layout = ({children}) => {
     <React.Fragment>
       <div className='flex'>
         <div><Sidebar/></div>
-        <div>
+        <div className='bg-slate-100 h-screen w-screen'>
           <main>{children}</main>
         </div>
       </div>
