@@ -9,6 +9,7 @@ import { FaUser } from "react-icons/fa";
 import { useSelector, useDispatch } from 'react-redux';
 import { NavLink, useNavigate } from "react-router-dom";
 import { LogOut,reset } from '../features/authSlice';
+import { RiLogoutBoxLine } from "react-icons/ri";
 
 // Mendefinisikan komponen Sidebar
 const Sidebar = () => {
@@ -27,13 +28,22 @@ const Sidebar = () => {
   
     const toggleSubMenu = (submenuName) => {
       console.log("Toggling submenu:", submenuName); // Menambahkan console log saat submenu ditoggle
+
+      if (submenuName === "Home") {
+        // Mengarahkan pengguna ke '/dashboard' saat submenu "Home" diklik
+        navigate('/dashboard');
+      }
+
       setActiveSubMenus((prevState) => ({
         ...prevState,
         [submenuName]: !prevState[submenuName],
       }));
     };
+
+
+    
   
-    console.log("User:", user); // Menambahkan console log untuk menampilkan data user
+    //console.log("User:", user); // Menambahkan console log untuk menampilkan data user
   
     return (
       <div className="flex">
@@ -43,7 +53,7 @@ const Sidebar = () => {
           } duration-500 relative`}
         >
           <div className="inline-flex">
-            <h1
+            <NavLink to={"/dashboard"} onClick={() => console.log("Navigating to Dashboard...")}
               className={`text-gray-200 ${
                 open ? "text-2xl" : "text-4xl"
               } duration-500 font-bold `}
@@ -52,7 +62,7 @@ const Sidebar = () => {
               <span className={`text-2xl duration-200 ${!open && "opacity-0"}`}>
                 ashboard
               </span>
-            </h1>
+            </NavLink>
           </div>
           <BsArrowLeftShort
             className={`bg-white text-dark text-4xl rounded-full 
@@ -66,17 +76,18 @@ const Sidebar = () => {
           />
   
           {/* Item menu "Home" */}
+          <NavLink to={'/dashboard'}>
           <div
             className={`mt-3 flex items-center text-gray-200 rounded-md  ${
               open ? "text-lg p-1.5" : "text-2xl p-1"
             } duration-500 cursor-pointer hover:bg-orange-100 hover:text-black`}
-            onClick={() => toggleSubMenu("Home")}
           >
             <span>
               <BsFillHouseDoorFill className={` `} />
             </span>
             <span className={` ml-4 ${!open && "opacity-0"} `}>Home</span>
           </div>
+          </NavLink>
   
           {/* Submenu "File" */}
           <div
@@ -84,7 +95,7 @@ const Sidebar = () => {
           ${open ? "text-lg p-1.5" : "text-2xl p-1"} duration-500 cursor-pointer hover:bg-orange-100 hover:text-black`}
             onClick={() => toggleSubMenu("File")}
           >
-            <div className="flex items-center">
+            <div className="flex items-center" >
               <span>
                 <IoFileTrayStackedSharp className={``} />
               </span>
@@ -104,13 +115,16 @@ const Sidebar = () => {
             className={`leading-7 flex-row items-center text-gray-200 font-thin mt-2 w-4/5 mx-auto transition-opacity duration-500 ${
               activeSubMenus["File"] ? "opacity-100" : "opacity-0"
             } ${activeSubMenus["File"] ? "h-auto" : "h-0"} overflow-hidden`}
-          >
-            <h1 className="cursor-pointer p-2 hover:text-white duration-500 rounded-md mt-1">
+          ><NavLink to={'/file/surat-masuk'}>
+            <h1 className="cursor-pointer p-2 hover:text-white duration-500 rounded-md mt-1" >
               Surat Masuk
             </h1>
+          </NavLink >
+            <NavLink to={'/file/surat-keluar'}>
             <h1 className="cursor-pointer p-2 hover:text-white duration-500 rounded-md mt-1">
               Surat Keluar
             </h1>
+            </NavLink>
           </div>
   
           {/* Submenu "Report" */}
@@ -140,12 +154,16 @@ const Sidebar = () => {
               activeSubMenus["Report"] ? "opacity-100" : "opacity-0"
             } ${activeSubMenus["Report"] ? "h-auto" : "h-0"} overflow-hidden`}
           >
-            <h1 className="cursor-pointer p-2 hover:text-white duration-500 rounded-md mt-1">
+            <NavLink to={'/record/surat-masuk'}>
+            <h1 className="cursor-pointer p-2 hover:text-white duration-500 rounded-md mt-1" >
               Surat Masuk
             </h1>
-            <h1 className="cursor-pointer p-2 hover:text-white duration-500 rounded-md mt-1">
+            </NavLink>
+            <NavLink to={'/record/surat-keluar'}>
+            <h1 className="cursor-pointer p-2 hover:text-white duration-500 rounded-md mt-1" >
               Surat Keluar
             </h1>
+            </NavLink>
           </div>
   
           {/* Garis pemisah */}
@@ -157,18 +175,33 @@ const Sidebar = () => {
   
           {/* Item menu "Admin" */}
           {user && user.role === "admin" && (
+            <NavLink to={'/users'}>
             <div
               className={`mt-3 flex items-center text-gray-200 rounded-md ${
                 open ? "text-lg p-1.5" : "text-2xl p-1"
               } duration-500 cursor-pointer hover:bg-orange-100 hover:text-black`}
-              onClick={() => toggleSubMenu("Admin")}
+              
             >
               <span>
                 <FaUser className={` `} />
               </span>
-              <span className={`ml-4 ${!open && "opacity-0"}`}>Admin</span>
+              <span className={`ml-4 ${!open && "opacity-0"}`} >Users</span>
             </div>
+            </NavLink>
           )}
+          
+        {/*Logout*/}
+          <div
+            className={`mt-3 flex items-center text-gray-200 rounded-md  ${
+              open ? "text-lg p-1.5" : "text-2xl p-1"
+            } duration-500 cursor-pointer hover:bg-orange-100 hover:text-black`}
+            onClick={logout}
+          >
+            <span>
+              <RiLogoutBoxLine className={` `} />
+            </span>
+            <span className={` ml-4 ${!open && "opacity-0"} `}>Logout</span>
+          </div>
   
           {/* Anda dapat menambahkan lebih banyak item submenu di sini dengan pola yang serupa */}
         </div>

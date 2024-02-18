@@ -73,7 +73,7 @@ export const updateUser = async(req,res)=>{
             email:email,
             password:hashPassword,
             role:role,
-            division:divisionId
+            division:division
         },{
             where:{
                 id: user.id
