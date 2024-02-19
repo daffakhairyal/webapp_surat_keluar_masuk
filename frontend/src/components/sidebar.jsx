@@ -195,7 +195,7 @@ const Sidebar = () => {
           
           {/* Item menu "Division" */}
           {user && user.role === "admin" && (
-            <NavLink to={'/division'}>
+            <NavLink to={'/divisions'}>
             <div
               className={`mt-3 flex items-center text-gray-200 rounded-md ${
                 open ? "text-lg p-1.5" : "text-3xl p-1"

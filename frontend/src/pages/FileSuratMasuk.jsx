@@ -6,7 +6,7 @@ import {useNavigate} from "react-router-dom"
 import {getMe} from "../features/authSlice"
 import FileSuratMasuk from './../components/FileSuratMasuk';
 
-const Dashboard = () => {
+const FileSuratMasukPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {isError} = useSelector((state)=> state.auth)
@@ -28,4 +28,4 @@ const Dashboard = () => {
   )
 }
 
-export default Dashboard
+export default FileSuratMasukPage

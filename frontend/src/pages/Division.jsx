@@ -4,9 +4,9 @@ import Layout from '../components/layout'
 import {useDispatch, useSelector} from "react-redux"
 import {useNavigate} from "react-router-dom"
 import {getMe} from "../features/authSlice"
-import RecordSuratKeluar from '../components/RecordSuratKeluar'
+import Division from '../components/Division'
 
-const RecordSuratKeluarPage = () => {
+const DivisionPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {isError} = useSelector((state)=> state.auth)
@@ -23,9 +23,9 @@ const RecordSuratKeluarPage = () => {
 
   return (
     <Layout>
-      <RecordSuratKeluar/>
+      <Division/>
     </Layout>
   )
 }
 
-export default RecordSuratKeluarPage
+export default DivisionPage
