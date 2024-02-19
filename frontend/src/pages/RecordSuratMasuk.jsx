@@ -7,7 +7,7 @@ import {getMe} from "../features/authSlice"
 import FileSuratMasuk from './../components/FileSuratMasuk';
 import RecordSuratMasuk from '../components/RecordSuratMasuk'
 
-const Dashboard = () => {
+const RecordSuratMasukPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {isError} = useSelector((state)=> state.auth)
@@ -29,4 +29,4 @@ const Dashboard = () => {
   )
 }
 
-export default Dashboard
+export default RecordSuratMasukPage

@@ -3,11 +3,12 @@ import React from 'react'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from './components/login';
 import Dashboard from './pages/Dashboard';
-import FileSuratMasuk from './pages/FileSuratMasuk';
-import FileSuratKeluar from './pages/FileSuratKeluar';
-import RecordSuratMasuk from './pages/RecordSuratMasuk';
-import RecordSuratKeluar from './pages/RecordSuratKeluar';
-import Users from './pages/Users';
+import FileSuratMasukPage from './pages/FileSuratMasuk';
+import FileSuratKeluarPage from './pages/FileSuratKeluar';
+import RecordSuratMasukPage from './pages/RecordSuratMasuk';
+import RecordSuratKeluarPage from './pages/RecordSuratKeluar';
+import UsersPage from './pages/Users';
+import DivisionPage from './pages/Division'
 
 
 
@@ -18,11 +19,12 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Login/>} />
           <Route path="/dashboard" element={<Dashboard/>}/>
-          <Route path="/file/surat-masuk" element={<FileSuratMasuk/>}/>
-          <Route path="/file/surat-keluar" element={<FileSuratKeluar/>}/>
-          <Route path="/record/surat-masuk" element={<RecordSuratMasuk/>}/>
-          <Route path="/record/surat-keluar" element={<RecordSuratKeluar/>}/>
-          <Route path="/users" element={<Users/>}/>
+          <Route path="/file/surat-masuk" element={<FileSuratMasukPage/>}/>
+          <Route path="/file/surat-keluar" element={<FileSuratKeluarPage/>}/>
+          <Route path="/record/surat-masuk" element={<RecordSuratMasukPage/>}/>
+          <Route path="/record/surat-keluar" element={<RecordSuratKeluarPage/>}/>
+          <Route path="/users" element={<UsersPage/>}/>
+          <Route path='/divisions' element={<DivisionPage/>}/>
           </Routes>
         </BrowserRouter>
     </div>

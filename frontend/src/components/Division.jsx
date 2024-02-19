@@ -9,54 +9,54 @@ import EditPegawai from "./EditPegawai";
 import HapusPegawai from "./HapusPegawai";
 import Pagination from "./Pagination";
 
-const Users = () => {
-    const [users, setUsers] = useState([]);
+const Division = () => {
+    const [divisions, setDivisions] = useState([]);
     const [showTambahModal, setShowTambahModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [selectedUserId, setSelectedUserId] = useState(null);
+    const [selectedDivisionId, setSelectedDivisionId] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [entriesPerPage, setEntriesPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
-        getUsers();
+        getDivisions();
     }, [currentPage, entriesPerPage]);
 
-    const getUsers = async () => {
+    const getDivisions = async () => {
         try {
-            const response = await axios.get("http://localhost:5000/users");
-            setUsers(response.data);
+            const response = await axios.get("http://localhost:5000/divisions");
+            setDivisions(response.data);
         } catch (error) {
             console.error("Error fetching users: ", error);
         }
     };
 
-    const deleteUser = async (userId) => {
+    const deleteUser = async (divisionId) => {
         try {
-            await axios.delete(`http://localhost:5000/users/${userId}`);
-            getUsers();
+            await axios.delete(`http://localhost:5000/users/${divisionId}`);
+            getDivisions();
         } catch (error) {
             console.error("Error deleting user: ", error);
         }
     };
 
-    const handleEditUser = (userId) => {
+    const handleEditUser = (divisionId) => {
         setShowEditModal(true);
-        setSelectedUserId(userId);
+        setSelectedDivisionId(divisionId);
     };
 
-    const handleDeleteUser = (userId) => {
+    const handleDeleteUser = (divisionId) => {
         setShowDeleteModal(true);
-        setSelectedUserId(userId);
+        setSelectedDivisionId(divisionId);
     };
 
     // Filter users based on search term
-    const filteredUsers = users.filter(user => {
-        return user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-               user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-               user.role.toLowerCase().includes(searchTerm.toLowerCase()) ||
-               user.division.toLowerCase().includes(searchTerm.toLowerCase());
+    const filteredUsers = divisions.filter(division => {
+        return division.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                division.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                division.role.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                division.division.toLowerCase().includes(searchTerm.toLowerCase());
     });
 
     // Display limited number of entries per page
@@ -103,25 +103,19 @@ const Users = () => {
                                     <tr>
                                         <th className="px-4 py-2">No</th>
                                         <th className="px-4 py-2">Name</th>
-                                        <th className="px-4 py-2">Email</th>
-                                        <th className="px-4 py-2">Role</th>
-                                        <th className="px-4 py-2">Division</th>
                                         <th className="px-4 py-2">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {currentEntries.map((user, index) => (
-                                        <tr key={user.uuid} className="hover:bg-gray-100">
+                                    {currentEntries.map((division, index) => (
+                                        <tr key={division.uuid} className="hover:bg-gray-100">
                                             <td className="border border-slate-200 px-4 py-2">{indexOfFirstEntry + index + 1}</td>
-                                            <td className="border border-slate-200 px-4 py-2">{user.name}</td>
-                                            <td className="border border-slate-200 px-4 py-2">{user.email}</td>
-                                            <td className="border border-slate-200 px-4 py-2">{user.role}</td>
-                                            <td className="border border-slate-200 px-4 py-2">{user.division}</td>
+                                            <td className="border border-slate-200 px-4 py-2">{division.name}</td>
                                             <td className="border border-slate-200 px-4 py-2 flex justify-center">
-                                                <button className="bg-blue-400 hover:bg-blue-500 duration-500 text-white font-bold py-2 px-4 rounded" onClick={() => handleEditUser(user.uuid)}>
+                                                <button className="bg-blue-400 hover:bg-blue-500 duration-500 text-white font-bold py-2 px-4 rounded" onClick={() => handleEditUser(division.uuid)}>
                                                     <FaEdit className='text-zinc-100' />
                                                 </button>
-                                                <button className="bg-red-400 hover:bg-red-500 duration-500 text-white font-bold py-2 px-4 rounded ml-2" onClick={() => handleDeleteUser(user.uuid)}>
+                                                <button className="bg-red-400 hover:bg-red-500 duration-500 text-white font-bold py-2 px-4 rounded ml-2" onClick={() => handleDeleteUser(division.uuid)}>
                                                     <MdDelete className='text-zinc-100' />
                                                 </button>
                                             </td>
@@ -145,10 +139,10 @@ const Users = () => {
                 
             </div>
             <TambahPegawai className='duration-500' isVisible={showTambahModal} onClose={() => setShowTambahModal(false)} />
-            <EditPegawai className='duration-500' isVisible={showEditModal} onClose={() => setShowEditModal(false)} userId={selectedUserId} />
-            <HapusPegawai className='duration-500' isVisible={showDeleteModal} onClose={() => setShowDeleteModal(false)} userId={selectedUserId} />
+            <EditPegawai className='duration-500' isVisible={showEditModal} onClose={() => setShowEditModal(false)} divisionId={selectedDivisionId} />
+            <HapusPegawai className='duration-500' isVisible={showDeleteModal} onClose={() => setShowDeleteModal(false)} divisionId={selectedDivisionId} />
         </Fragment>
     );
 }
 
-export default Users;
+export default Division;
