@@ -10,6 +10,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { NavLink, useNavigate } from "react-router-dom";
 import { LogOut,reset } from '../features/authSlice';
 import { RiLogoutBoxLine } from "react-icons/ri";
+import { FaNetworkWired } from "react-icons/fa6";
 
 // Mendefinisikan komponen Sidebar
 const Sidebar = () => {
@@ -48,7 +49,7 @@ const Sidebar = () => {
     return (
       <div className="flex">
         <div
-          className={`bg-red-800 h-screen p-5 pt-8 ${
+          className={`bg-red-800   h-screen p-5 pt-8 ${
             open ? "w-72" : "w-20"
           } duration-500 relative`}
         >
@@ -188,8 +189,30 @@ const Sidebar = () => {
               <span className={`ml-4 ${!open && "opacity-0"}`} >Users</span>
             </div>
             </NavLink>
+            
+            
           )}
           
+          {/* Item menu "Division" */}
+          {user && user.role === "admin" && (
+            <NavLink to={'/division'}>
+            <div
+              className={`mt-3 flex items-center text-gray-200 rounded-md ${
+                open ? "text-lg p-1.5" : "text-3xl p-1"
+              } duration-500 cursor-pointer hover:bg-orange-100 hover:text-black`}
+              
+            >
+              <span>
+                <FaNetworkWired className={` `} />
+              </span>
+              <span className={`ml-4 ${!open && "opacity-0"}`} >Division</span>
+            </div>
+            </NavLink>
+            
+            
+          )}
+
+
         {/*Logout*/}
           <div
             className={`mt-3 flex items-center text-gray-200 rounded-md  ${
