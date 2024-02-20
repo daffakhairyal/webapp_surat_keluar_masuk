@@ -5,7 +5,7 @@ const RecordSuratMasuk = () => {
   return (
     <div className='m-8'>
     <div className='text-2xl font-weight: 600' >
-        <h1>Surat Keluar</h1>
+        <h1>Surat Masuk</h1>
     </div>
    </div>
   )

@@ -65,7 +65,7 @@ const TambahPegawai = ({ isVisible, onClose }) => {
     <div className='fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center'>
       <div className="bg-white p-8 rounded-lg shadow-md w-96">
         <h2 className="text-2xl font-semibold mb-4">Tambah Pegawai</h2>
-        {msg && <div className="text-red-500 mb-4">{msg}</div>}
+        {msg && <div className="text-green-500 mb-4">{msg}</div>}
         <form onSubmit={saveUser}>
           <div className="mb-4">
             <label htmlFor="nama" className="block text-gray-700 font-medium mb-2">Nama</label>

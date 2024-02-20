@@ -6,7 +6,7 @@ import Sidebar from './sidebar'
 const Layout = ({children}) => {
   return (
     <React.Fragment>
-      <div className='flex'>
+      <div className='flex h-screen'>
         <div><Sidebar className='shadow:lg'/></div>
         
         <div className='bg-slate-100 h-screen w-screen flex flex-col relative'>

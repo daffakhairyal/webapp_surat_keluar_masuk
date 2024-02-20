@@ -175,7 +175,7 @@ const Sidebar = () => {
           )}
   
           {/* Item menu "Admin" */}
-          {user && user.role === "admin" && (
+          {user && user.role === "admin" && user.division === "HRD" && (
             <NavLink to={'/users'}>
             <div
               className={`mt-3 flex items-center text-gray-200 rounded-md ${
@@ -194,7 +194,7 @@ const Sidebar = () => {
           )}
           
           {/* Item menu "Division" */}
-          {user && user.role === "admin" && (
+          {user && user.role === "admin" && user.division === "HRD" && (
             <NavLink to={'/divisions'}>
             <div
               className={`mt-3 flex items-center text-gray-200 rounded-md ${
