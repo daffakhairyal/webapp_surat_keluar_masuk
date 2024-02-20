@@ -4,10 +4,10 @@ import axios from "axios";
 import { IoMdAddCircle } from "react-icons/io";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-import TambahPegawai from "./TambahPegawai";
-import EditPegawai from "./EditPegawai";
-import HapusPegawai from "./HapusPegawai";
 import Pagination from "./Pagination";
+import TambahDivisi from "./TambahDivisi";
+import EditDivisi from "./EditDivisi";
+import HapusDivisi from "./HapusDivisi";
 
 const Division = () => {
     const [divisions, setDivisions] = useState([]);
@@ -102,7 +102,7 @@ const Division = () => {
                                 <thead className="bg-gray-200">
                                     <tr>
                                         <th className="px-4 py-2">No</th>
-                                        <th className="px-4 py-2">Name</th>
+                                        <th className="px-4 py-2">Division</th>
                                         <th className="px-4 py-2">Actions</th>
                                     </tr>
                                 </thead>
@@ -138,9 +138,9 @@ const Division = () => {
                 </div>
                 
             </div>
-            <TambahPegawai className='duration-500' isVisible={showTambahModal} onClose={() => setShowTambahModal(false)} />
-            <EditPegawai className='duration-500' isVisible={showEditModal} onClose={() => setShowEditModal(false)} divisionId={selectedDivisionId} />
-            <HapusPegawai className='duration-500' isVisible={showDeleteModal} onClose={() => setShowDeleteModal(false)} divisionId={selectedDivisionId} />
+            <TambahDivisi className='duration-500' isVisible={showTambahModal} onClose={() => setShowTambahModal(false)} />
+            <EditDivisi className='duration-500' isVisible={showEditModal} onClose={() => setShowEditModal(false)} divisionId={selectedDivisionId} />
+            <HapusDivisi className='duration-500' isVisible={showDeleteModal} onClose={() => setShowDeleteModal(false)} divisionId={selectedDivisionId} />
         </Fragment>
     );
 }
