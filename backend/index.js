@@ -7,6 +7,8 @@ import db from "./config/Database.js";
 import UserRoute from "./routes/UserRoute.js";
 import AuthRoute from "./routes/AuthRoute.js";
 import DivisionRoute from "./routes/DivisionRoute.js"
+import SuratMasukRoute from "./routes/SuratMasukRoute.js"
+import SuratKeluarRoute from "./routes/SuratKeluarRoute.js"
 
 dotenv.config();
 
@@ -48,6 +50,8 @@ app.use(express.json());
 app.use(UserRoute);
 app.use(AuthRoute);
 app.use(DivisionRoute);
+app.use(SuratMasukRoute);
+app.use(SuratKeluarRoute);
 
 store.sync();
 app.listen(PORT,()=> {
