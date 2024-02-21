@@ -69,7 +69,7 @@ const TambahPegawai = ({ isVisible, onClose }) => {
         <form onSubmit={saveUser}>
           <div className="mb-4">
             <label htmlFor="nama" className="block text-gray-700 font-medium mb-2">Nama</label>
-            <input type="text" id="nama" name="nama" value={name} className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500" onChange={(e) => setName(e.target.value)} />
+            <input type="text" id="dibuatOleh" name="dibuatOleh" value={user ? user.name : ''} disabled className="px-3 py-2 border border-slate-400 rounded-md focus:outline-none focus:border-blue-500" />
           </div>
           <div className="mb-4">
             <label htmlFor="email" className="block text-gray-700 font-medium mb-2">Email</label>

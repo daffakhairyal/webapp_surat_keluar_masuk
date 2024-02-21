@@ -72,13 +72,13 @@ const Division = () => {
         <Fragment>
             <div className='m-8'>
                 <div className='text-2xl font-semibold'>
-                    <h1>Users</h1>
+                    <h1>Division</h1>
                 </div>
                 <div className='bg-zinc-100 mt-5 shadow-md rounded h-[75vh] '>
                     <div className='m-3 p-1'>
                         <button className='flex rounded bg-blue-400 hover:bg-blue-500 duration-500 p-2 mt-2 shadow-md' onClick={() => setShowTambahModal(true)}>
                             <IoMdAddCircle className='text-zinc-100 text-xl mt-0.5' />
-                            <span className='ml-1 text-zinc-100'>Tambah User</span>
+                            <span className='ml-1 text-zinc-100'>Tambah Divisi</span>
                         </button>
                         <input
                             type="text"
