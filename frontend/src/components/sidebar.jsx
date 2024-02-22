@@ -66,7 +66,7 @@ const Sidebar = () => {
             </NavLink>
           </div>
           <BsArrowLeftShort
-            className={`bg-white text-dark text-4xl rounded-full 
+            className={` z-10 bg-white text-dark text-4xl rounded-full 
               absolute -right-3 top-9 border border-red-950 cursor-pointer ${
                 !open && "rotate-180"
               } duration-500`}
