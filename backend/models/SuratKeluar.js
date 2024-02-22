@@ -61,6 +61,11 @@ const SuratKeluar = db.define('surat_keluar', {
     createdBy:{
         type: DataTypes.STRING,
         allowNull: false
+    },
+    status: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: 0 // or 1 depending on the initial state
     }
 }, {
     freezeTableName: true
