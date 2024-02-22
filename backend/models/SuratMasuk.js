@@ -61,6 +61,11 @@ const SuratMasuk = db.define('surat_masuk', {
     createdBy:{
         type: DataTypes.STRING,
         allowNull: false
+    }, 
+    status: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: 0 // or 1 depending on the initial state
     }
 }, {
     freezeTableName: true

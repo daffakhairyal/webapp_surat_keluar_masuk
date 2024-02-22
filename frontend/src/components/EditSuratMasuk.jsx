@@ -13,18 +13,20 @@ const EditSuratMasuk = ({ isVisible, onClose, user, suratMasukId }) => {
     useEffect(() => {
         const fetchSuratMasuk = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/surat_masuk/${suratMasukId}`);
-                const fetchedSuratMasuk = response.data;
-                // Update createdBy based on logged in user if user exists
-                if (user) {
-                    fetchedSuratMasuk.createdBy = user.name;
+                if (suratMasukId) { // Menambahkan pengecekan kondisional
+                    const response = await axios.get(`http://localhost:5000/surat_masuk/${suratMasukId}`);
+                    const fetchedSuratMasuk = response.data;
+                    // Update createdBy based on logged in user if user exists
+                    if (user) {
+                        fetchedSuratMasuk.createdBy = user.name;
+                    }
+                    setSuratMasuk(fetchedSuratMasuk);
                 }
-                setSuratMasuk(fetchedSuratMasuk);
             } catch (error) {
                 console.error("Error fetching surat masuk:", error);
             }
         };
-
+    
         fetchSuratMasuk();
     }, [suratMasukId, user]);
 

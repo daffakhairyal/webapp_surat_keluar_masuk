@@ -1,18 +1,21 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import React, { useState, useEffect, Fragment } from "react";
 import axios from "axios";
 import { IoMdAddCircle } from "react-icons/io";
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaLock, FaUnlock, FaPrint } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import Pagination from "./Pagination";
 import TambahSuratMasuk from "./TambahSuratMasuk";
 import EditSuratMasuk from "./EditSuratMasuk";
 import HapusSuratMasuk from "./HapusSuratMasuk";
-import { FaLock } from "react-icons/fa";
-import { FaUnlock } from "react-icons/fa";
 
 const FileSuratMasuk = ({ user }) => {
+    const userRole = user && user.role;
+
+    if (!user || !userRole) {
+        return <div>Loading...</div>;
+    }
+
     const [suratMasuk, setSuratMasuk] = useState([]);
     const [showTambahModal, setShowTambahModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
@@ -25,6 +28,8 @@ const FileSuratMasuk = ({ user }) => {
     useEffect(() => {
         getSuratMasuk();
     }, [currentPage, entriesPerPage]);
+
+    const navigate = useNavigate(); // Initialize useNavigate
 
     const getSuratMasuk = async () => {
         try {
@@ -45,6 +50,36 @@ const FileSuratMasuk = ({ user }) => {
         setSelectedSuratMasukId(suratMasukId);
     };
 
+    const handleLockSurat = async (suratId) => {
+        try {
+            await axios.patch(`http://localhost:5000/surat_masuk/${suratId}`, { status: 1 });
+            const updatedSuratMasuk = suratMasuk.map(surat => {
+                if (surat.uuid === suratId) {
+                    return { ...surat, status: 1 };
+                }
+                return surat;
+            });
+            setSuratMasuk(updatedSuratMasuk);
+        } catch (error) {
+            console.error("Error locking surat: ", error);
+        }
+    };
+
+    const handleUnlockSurat = async (suratId) => {
+        try {
+            await axios.patch(`http://localhost:5000/surat_masuk/${suratId}`, { status: 0 });
+            const updatedSuratMasuk = suratMasuk.map(surat => {
+                if (surat.uuid === suratId) {
+                    return { ...surat, status: 0 };
+                }
+                return surat;
+            });
+            setSuratMasuk(updatedSuratMasuk);
+        } catch (error) {
+            console.error("Error unlocking surat: ", error);
+        }
+    };
+
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         const formattedDate = date.toLocaleDateString('id-ID', {
@@ -55,7 +90,6 @@ const FileSuratMasuk = ({ user }) => {
         return formattedDate;
     };
 
-    // Filter surat masuk based on search term
     const filteredSuratMasuk = suratMasuk.filter(surat => {
         return surat.perihal_surat.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 surat.penerima_surat_nama.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -63,7 +97,6 @@ const FileSuratMasuk = ({ user }) => {
                 surat.createdBy.toLowerCase().includes(searchTerm.toLowerCase());
     });
 
-    // Display limited number of entries per page
     const indexOfLastEntry = Math.min(currentPage * entriesPerPage, filteredSuratMasuk.length);
     const indexOfFirstEntry = Math.max(0, indexOfLastEntry - entriesPerPage);
     const currentEntries = filteredSuratMasuk.slice(indexOfFirstEntry, indexOfLastEntry);
@@ -71,6 +104,16 @@ const FileSuratMasuk = ({ user }) => {
     const onPageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
     }
+
+    const handlePrintSuratMasuk = (suratId) => {
+        // Navigate to SuratMasukTemplate page with the selected surat id
+        const surat = suratMasuk.find(item => item.uuid === suratId);
+        if (surat) {
+            navigate(`/surat-masuk/${suratId}`);
+        } else {
+            console.error(`Surat with id ${suratId} not found.`);
+        }
+    };
 
     return (
         <Fragment>
@@ -110,32 +153,43 @@ const FileSuratMasuk = ({ user }) => {
                                         <th className="px-4 py-2">Penerima Surat</th>
                                         <th className="px-4 py-2">Tanggal Surat Masuk</th>
                                         <th className="px-4 py-2">Dibuat oleh</th>
-                                        
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {currentEntries.map((surat, index) => (
                                         <tr key={surat.uuid} className="hover:bg-gray-100">
-                                        <td className="border border-slate-200 px-4 py-2 flex justify-center">
-                                                <button className="bg-blue-400 hover:bg-blue-500 duration-500 text-white font-bold py-2 px-4 rounded" onClick={() => handleEditSuratMasuk(surat.uuid)}>
-                                                    <FaEdit className='text-zinc-100' />
-                                                </button>
-                                                <button className="bg-red-400 hover:bg-red-500 duration-500 text-white font-bold py-2 px-4 rounded ml-2" onClick={() => handleDeleteSuratMasuk(surat.uuid)}>
-                                                    <MdDelete className='text-zinc-100' />
-                                                </button>
-                                                <button className="bg-green-400 hover:bg-green-500 duration-500 text-white font-bold py-2 px-4 rounded ml-2" onClick={() => handleDeleteSuratMasuk(surat.uuid)}>
-                                                    <FaLock className='text-zinc-100' />
-                                                </button>
-                                                <button className="bg-green-400 hover:bg-green-500 duration-500 text-white font-bold py-2 px-4 rounded ml-2" onClick={() => handleDeleteSuratMasuk(surat.uuid)}>
-                                                    <FaUnlock className='text-zinc-100' />
-                                                </button>
+                                            <td className="border border-slate-200 px-4 py-2 flex justify-center">
+                                                {surat.status === 0 ? (
+                                                    <Fragment>
+                                                        <button className="bg-blue-400 hover:bg-blue-500 duration-500 text-white font-bold py-2 px-4 rounded" onClick={() => handleEditSuratMasuk(surat.uuid)}>
+                                                            <FaEdit className='text-zinc-100' />
+                                                        </button>
+                                                        <button className="bg-red-400 hover:bg-red-500 duration-500 text-white font-bold py-2 px-4 rounded ml-2" onClick={() => handleDeleteSuratMasuk(surat.uuid)}>
+                                                            <MdDelete className='text-zinc-100' />
+                                                        </button>
+                                                        <button className="bg-yellow-400 hover:bg-yellow-500 duration-500 text-white font-bold py-2 px-4 rounded ml-2" onClick={() => handlePrintSuratMasuk(surat.uuid)}>
+                                                            <FaPrint className='text-zinc-100' />
+                                                        </button>
+                                                        <button className="bg-green-400 hover:bg-green-500 duration-500 text-white font-bold py-2 px-4 rounded ml-2" onClick={() => handleLockSurat(surat.uuid)}>
+                                                            <FaLock className='text-zinc-100' />
+                                                        </button>
+                                                    </Fragment>
+                                                ) : (
+                                                    <Fragment>
+                                                        <button className="bg-yellow-400 hover:bg-yellow-500 duration-500 text-white font-bold py-2 px-4 rounded ml-2" onClick={() => handlePrintSuratMasuk(surat.uuid)}>
+                                                            <FaPrint className='text-zinc-100' />
+                                                        </button>
+                                                        <button className="bg-green-400 hover:bg-green-500 duration-500 text-white font-bold py-2 px-4 rounded ml-2" onClick={() => handleUnlockSurat(surat.uuid)}>
+                                                            <FaUnlock className='text-zinc-100' />
+                                                        </button>
+                                                    </Fragment>
+                                                )}
                                             </td>
                                             <td className="border border-slate-200 px-4 py-2">{indexOfFirstEntry + index + 1}</td>
                                             <td className="border border-slate-200 px-4 py-2">{surat.perihal_surat}</td>
                                             <td className="border border-slate-200 px-4 py-2">{surat.penerima_surat_nama}</td>
                                             <td className="border border-slate-200 px-4 py-2">{formatDate(surat.tanggal_surat_masuk)}</td>
                                             <td className="border border-slate-200 px-4 py-2">{surat.createdBy}</td>
-                                            
                                         </tr>
                                     ))}
                                 </tbody>
