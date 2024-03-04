@@ -1,13 +1,12 @@
 import React, { useState, useEffect, Fragment } from "react";
 import axios from "axios";
-import { IoMdAddCircle } from "react-icons/io";
-import { FaEdit, FaLock, FaUnlock, FaPrint } from "react-icons/fa";
-import { MdDelete } from "react-icons/md";
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
+import { RiFileExcel2Fill } from "react-icons/ri";
 import Pagination from "./Pagination";
 import TambahSuratKeluar from "./TambahSuratKeluar";
 import EditSuratKeluar from "./EditSuratKeluar";
 import HapusSuratKeluar from "./HapusSuratKeluar";
+import * as XLSX from 'xlsx';
 
 const RecordSuratKeluar = ({ user }) => {
     const userRole = user && user.role;
@@ -24,20 +23,38 @@ const RecordSuratKeluar = ({ user }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [entriesPerPage, setEntriesPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
+    const [exportData, setExportData] = useState([]);
 
     useEffect(() => {
         getSuratKeluar();
     }, [currentPage, entriesPerPage]);
 
-    const navigate = useNavigate(); // Initialize useNavigate
+    const navigate = useNavigate();
 
     const getSuratKeluar = async () => {
         try {
             const response = await axios.get("http://localhost:5000/surat_keluar");
             setSuratKeluar(response.data);
+            setExportData(response.data);
         } catch (error) {
             console.error("Error fetching surat keluar: ", error);
         }
+    };
+
+    const exportToExcel = () => {
+        const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+        const fileExtension = '.xlsx';
+        const fileName = 'surat_keluar_export';
+
+        const ws = XLSX.utils.json_to_sheet(exportData);
+        const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+        const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+        const data = new Blob([excelBuffer], { type: fileType });
+        const url = window.URL.createObjectURL(data);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileName + fileExtension;
+        a.click();
     };
 
     const handleEditSuratKeluar = (suratKeluarId) => {
@@ -48,36 +65,6 @@ const RecordSuratKeluar = ({ user }) => {
     const handleDeleteSuratKeluar = (suratKeluarId) => {
         setShowDeleteModal(true);
         setSelectedSuratKeluarId(suratKeluarId);
-    };
-
-    const handleLockSurat = async (suratId) => {
-        try {
-            await axios.patch(`http://localhost:5000/surat_keluar/${suratId}`, { status: 1 });
-            const updatedSuratKeluar = suratKeluar.map(surat => {
-                if (surat.uuid === suratId) {
-                    return { ...surat, status: 1 };
-                }
-                return surat;
-            });
-            setSuratKeluar(updatedSuratKeluar);
-        } catch (error) {
-            console.error("Error locking surat: ", error);
-        }
-    };
-
-    const handleUnlockSurat = async (suratId) => {
-        try {
-            await axios.patch(`http://localhost:5000/surat_keluar/${suratId}`, { status: 0 });
-            const updatedSuratKeluar = suratKeluar.map(surat => {
-                if (surat.uuid === suratId) {
-                    return { ...surat, status: 0 };
-                }
-                return surat;
-            });
-            setSuratKeluar(updatedSuratKeluar);
-        } catch (error) {
-            console.error("Error unlocking surat: ", error);
-        }
     };
 
     const formatDate = (dateString) => {
@@ -105,16 +92,6 @@ const RecordSuratKeluar = ({ user }) => {
         setCurrentPage(pageNumber);
     }
 
-    const handlePrintSuratKeluar = (suratId) => {
-        // Navigate to SuratKeluarTemplate page with the selected surat id
-        const surat = suratKeluar.find(item => item.uuid === suratId);
-        if (surat) {
-            navigate(`/surat-keluar/${suratId}`);
-        } else {
-            console.error(`Surat with id ${suratId} not found.`);
-        }
-    };
-
     return (
         <Fragment>
             <div className='m-8'>
@@ -139,6 +116,13 @@ const RecordSuratKeluar = ({ user }) => {
                             <option value={50}>50</option>
                             <option value={100}>100</option>
                         </select>
+                        <button
+                            onClick={exportToExcel}
+                            className="p-2 ml-2 mt-2 flex bg-green-500 text-white rounded hover:bg-green-600"
+                        >
+                            <RiFileExcel2Fill className='text-zinc-100 text-xl mt-0.5' />
+                            <span className='ml-1 text-zinc-100'>Export to Excel</span>
+                        </button>
                         <div className='mt-2'>
                             <table className="table-auto w-full mb-3  border-collapse border border-gray-300">
                                 <thead className="bg-gray-200">
