@@ -91,10 +91,12 @@ const RecordSuratKeluar = ({ user }) => {
     };
 
     const filteredSuratKeluar = suratKeluar.filter(surat => {
-        return surat.perihal_surat.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                surat.penerima_surat_nama.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                surat.tanggal_surat_keluar.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                surat.createdBy.toLowerCase().includes(searchTerm.toLowerCase());
+        return (
+            (surat.perihal_surat && surat.perihal_surat.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            (surat.penerima_surat_nama && surat.penerima_surat_nama.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            (surat.tanggal_surat_keluar && surat.tanggal_surat_keluar.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            (surat.createdBy && surat.createdBy.toLowerCase().includes(searchTerm.toLowerCase()))
+        );
     });
 
     const indexOfLastEntry = Math.min(currentPage * entriesPerPage, filteredSuratKeluar.length);

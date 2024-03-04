@@ -91,11 +91,14 @@ const FileSuratMasuk = ({ user }) => {
     };
 
     const filteredSuratMasuk = suratMasuk.filter(surat => {
-        return surat.perihal_surat.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                surat.penerima_surat_nama.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                surat.tanggal_surat_masuk.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                surat.createdBy.toLowerCase().includes(searchTerm.toLowerCase());
+        return (
+            (surat.perihal_surat && surat.perihal_surat.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            (surat.penerima_surat_nama && surat.penerima_surat_nama.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            (surat.tanggal_surat_masuk && surat.tanggal_surat_masuk.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            (surat.createdBy && surat.createdBy.toLowerCase().includes(searchTerm.toLowerCase()))
+        );
     });
+    
 
     const indexOfLastEntry = Math.min(currentPage * entriesPerPage, filteredSuratMasuk.length);
     const indexOfFirstEntry = Math.max(0, indexOfLastEntry - entriesPerPage);
