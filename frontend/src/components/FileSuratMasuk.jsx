@@ -24,7 +24,7 @@ const FileSuratMasuk = ({ user }) => {
         const fetchData = async () => {
             try {
                 const response = await axios.get('http://localhost:5000/surat_masuk');
-                console.log('Surat masuk response:', response.data)
+                
                 setSuratMasuk(response.data);
                 setStatusDataLoaded(true); // Set statusDataLoaded to true when data is fetched successfully
             } catch (error) {
