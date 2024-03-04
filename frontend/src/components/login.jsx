@@ -13,7 +13,7 @@ const Login = () => {
 
   useEffect(() => {
     if (user || isSuccess) {
-      navigate("/dashboard");
+      navigate("/file/surat-masuk");
     }
     dispatch(reset());
   }, [user, isSuccess, dispatch, navigate]);
